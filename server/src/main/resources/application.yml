@@ -1,0 +1,5 @@
+
+netty:
+  port: 8096
+server:
+  port: 8081
