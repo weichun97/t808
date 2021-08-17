@@ -16,9 +16,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>common</module>
-        <module>common/common-core</module>
         <module>server</module>
-        <module>common/common-log</module>
     </modules>
 
     <properties>
@@ -35,6 +33,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- fgoc -->
+            <dependency>
+                <groupId>com.itran.fgoc</groupId>
+                <artifactId>common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- netty -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
