@@ -11,6 +11,6 @@ public class T808ChannelHandler extends SimpleChannelInboundHandler<byte[]> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, byte[] decodeMessage) throws Exception {
         MessageHeader messageHeader = T808Utils.getMessageHeader(decodeMessage);
         byte[] messageBody = T808Utils.getMessageBody(messageHeader, decodeMessage);
-        HandlerFactory.get(messageHeader.getMessageId()).handle(messageBody);
+        HandlerFactory.get(messageHeader.getMessageId()).handle(channelHandlerContext, decodeMessage, messageHeader, messageBody);
     }
 }

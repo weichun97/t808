@@ -7,17 +7,27 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
+ * 客户端鉴权
+ *
+ * 例子: 7E
+ * 01 02
+ * 00 00
+ * 04 19 05 76 86 79
+ * 00 01
+ * 93
+ * 7E
+ *
  * @author chun
- * @date 2021/8/18 11:03
+ * @date 2021/8/18 16:25
  */
 @Data
 @Component
-public class NullHandler implements BaseHandler {
+public class AuthenticationHandler implements BaseHandler {
 
     /**
      * 消息 id
      */
-    private final String messageId = MessageVar.MessageId.NULL;
+    private final String messageId = MessageVar.MessageId.AUTHENTICA;
 
     @Override
     public void handle(ChannelHandlerContext channelHandlerContext, byte[] decodeMessage, MessageHeader messageHeader, byte[] messageBody) {

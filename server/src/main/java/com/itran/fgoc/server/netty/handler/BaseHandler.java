@@ -1,5 +1,7 @@
 package com.itran.fgoc.server.netty.handler;
 
+import com.itran.fgoc.server.netty.MessageHeader;
+import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -17,7 +19,7 @@ public interface BaseHandler extends InitializingBean {
     /**
      * 处理
      */
-    void handle(byte[] messageBody);
+    void handle(ChannelHandlerContext channelHandlerContext, byte[] decodeMessage, MessageHeader messageHeader, byte[] messageBody);
 
     @Override
     default void afterPropertiesSet() throws Exception{

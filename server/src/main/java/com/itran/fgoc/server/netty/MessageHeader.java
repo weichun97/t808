@@ -1,6 +1,6 @@
 package com.itran.fgoc.server.netty;
 
-import com.itran.fgoc.server.netty.var.EncryptionVar;
+import com.itran.fgoc.server.netty.var.MessageVar;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +22,7 @@ public class MessageHeader implements Serializable {
 
     /**
      * 消息 id
+     * @see MessageVar.MessageId
      */
     private String messageId;
 
@@ -32,9 +33,9 @@ public class MessageHeader implements Serializable {
 
     /**
      * 加密方式
-     * @see EncryptionVar
+     * @see MessageVar.Encryption
      */
-    private Integer encryption;
+    private String encryption;
 
     /**
      * 是否分包
@@ -42,7 +43,7 @@ public class MessageHeader implements Serializable {
     private boolean subcontract;
 
     /**
-     * 消息体保留字
+     * @see MessageVar.Reserve
      */
     private String reserve;
 
@@ -70,4 +71,9 @@ public class MessageHeader implements Serializable {
      * 消息头长度
      */
     private Integer length;
+
+    /**
+     * 原始数据
+     */
+    private byte[] original;
 }
