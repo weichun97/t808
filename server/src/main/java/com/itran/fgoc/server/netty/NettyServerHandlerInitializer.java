@@ -9,7 +9,7 @@ public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel ch) throws Exception {
         ch.pipeline()
             .addLast("t808Decoder", new T808Decode())
-            .addLast(new DataChannelHandler())
+            .addLast(new T808ChannelHandler())
               ;
     }
 }

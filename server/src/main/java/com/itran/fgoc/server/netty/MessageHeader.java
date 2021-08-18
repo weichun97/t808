@@ -1,5 +1,6 @@
 package com.itran.fgoc.server.netty;
 
+import com.itran.fgoc.server.netty.var.EncryptionVar;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class MessageHeader implements Serializable {
 
     /**
      * 加密方式
+     * @see EncryptionVar
      */
     private Integer encryption;
 
@@ -57,10 +59,15 @@ public class MessageHeader implements Serializable {
     /**
      * 分包总数
      */
-    private Integer count;
+    private Long count;
 
     /**
      * 包序号
      */
-    private Integer currentNumber;
+    private Long currentNumber;
+
+    /**
+     * 消息头长度
+     */
+    private Integer length;
 }
