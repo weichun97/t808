@@ -33,12 +33,12 @@ public interface MessageVar {
      * 加密方式
      */
     interface Encryption {
-        String NULL = "000";
+        String DEFAULT = "000";
         String RSC = "001";
 
         Enums SCOPE = Enums.build()
-                .add(NULL, "000")
-                .add(RSC, "001")
+                .add(DEFAULT, "不加密")
+                .add(RSC, "RSC加密")
                 ;
     }
 
@@ -46,10 +46,10 @@ public interface MessageVar {
      * 保留字
      */
     interface Reserve {
-        String NULL = "000";
+        String DEFAULT = "000";
 
         Enums SCOPE = Enums.build()
-                .add(NULL, "000")
+                .add(DEFAULT, "默认")
                 ;
     }
 }

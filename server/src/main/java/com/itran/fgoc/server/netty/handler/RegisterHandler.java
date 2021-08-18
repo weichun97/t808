@@ -1,7 +1,6 @@
 package com.itran.fgoc.server.netty.handler;
 
 import com.itran.fgoc.server.netty.MessageHeader;
-import com.itran.fgoc.server.netty.util.T808Utils;
 import com.itran.fgoc.server.netty.var.MessageVar;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
@@ -33,7 +32,6 @@ public class RegisterHandler implements BaseHandler {
 
     @Override
     public void handle(ChannelHandlerContext channelHandlerContext, byte[] decodeMessage, MessageHeader messageHeader, byte[] messageBody) {
-        T808Utils.createMessage(MessageHeader.builder().build(), messageBody);
-        channelHandlerContext.channel().writeAndFlush(11);
+        channelHandlerContext.channel().writeAndFlush(null);
     }
 }

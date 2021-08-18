@@ -1,7 +1,6 @@
 package com.itran.fgoc.server.netty.util;
 
 import cn.hutool.core.codec.BCD;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -10,11 +9,11 @@ import com.itran.fgoc.common.core.exception.ApiException;
 import com.itran.fgoc.common.core.util.NumberUtil;
 import com.itran.fgoc.common.core.util.StrUtil;
 import com.itran.fgoc.server.netty.MessageHeader;
+import com.itran.fgoc.server.netty.var.MessageVar;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +29,7 @@ public class T808Utils {
     /**
      * 流水号容器
      */
-    private static final Map<String, Integer> MESSAGE_SERIAL_NUMBER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Long> MESSAGE_SERIAL_NUMBER_MAP = new ConcurrentHashMap<>();
 
     /**
      * 标识位
@@ -39,13 +38,14 @@ public class T808Utils {
 
     /**
      * 获取消息的流水号
-     * @param messageId
-     * @return
+     *
+     * @param messageId the message id
+     * @return long
      */
-    public static Integer getMessageSerialNumber(String messageId){
-        Integer messageSerialNumber = 1;
-        if(MESSAGE_SERIAL_NUMBER_MAP.containsKey(messageId)){
-            messageSerialNumber = MESSAGE_SERIAL_NUMBER_MAP.get(messageId) == Integer.MAX_VALUE ? 1 : MESSAGE_SERIAL_NUMBER_MAP.get(messageId) + 1;
+    public synchronized static Long getMessageSerialNumber(String messageId){
+        long messageSerialNumber = 1;
+        if(MESSAGE_SERIAL_NUMBER_MAP.containsKey(messageId) && MESSAGE_SERIAL_NUMBER_MAP.get(messageId) != Long.MAX_VALUE){
+            messageSerialNumber = MESSAGE_SERIAL_NUMBER_MAP.get(messageId) + 1;
         }
         MESSAGE_SERIAL_NUMBER_MAP.put(messageId, messageSerialNumber);
         return messageSerialNumber;
@@ -92,6 +92,26 @@ public class T808Utils {
     /**
      * 创建消息
      *
+     * @param messageId    消息 id
+     * @param clientNumber 终端手机号
+     * @param bodyMessage  消息体
+     * @return the byte [ ]
+     */
+    public static byte[] createMessage(String messageId, String clientNumber, byte[] bodyMessage){
+        return createMessage(MessageHeader.builder()
+                .messageId(messageId)
+                .reserve(MessageVar.Reserve.DEFAULT)
+                .subcontract(false)
+                .encryption(MessageVar.Encryption.DEFAULT)
+                .messageBodyLength(bodyMessage.length)
+                .clientNumber(clientNumber)
+                .messageSerialNumber(getMessageSerialNumber(messageId))
+                .build(), bodyMessage);
+    }
+
+    /**
+     * 创建消息
+     *
      * @param messageHeader 消息头对象
      * @param bodyMessage   消息体
      * @return the byte [ ]
@@ -103,7 +123,7 @@ public class T808Utils {
         String messageBodyAttributeBinaryStr = messageHeader.getReserve() +
                 (messageHeader.isSubcontract() ? "1" : "0") +
                 messageHeader.getEncryption() +
-                StrUtil.addZeroForNum(NumberUtil.getBinaryStr(messageHeader.getMessageBodyLength()), 9);
+                StrUtil.addZeroForNum(NumberUtil.getBinaryStr(bodyMessage.length), 9);
         String messageBodyAttributeHexStr = HexUtil.encodeHexStr(new byte[]{Byte.parseByte(messageBodyAttributeBinaryStr.substring(0, 8), 2), Byte.parseByte(messageBodyAttributeBinaryStr.substring(8), 2)});
         hexStrBuild.append(messageBodyAttributeHexStr);
 
@@ -125,7 +145,6 @@ public class T808Utils {
 
         return ArrayUtil.addAll(FLAG, messageHeadAndBody, new byte[]{checkCode}, FLAG);
     }
-
 
 
     /**
