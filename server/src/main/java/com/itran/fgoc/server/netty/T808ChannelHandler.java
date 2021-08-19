@@ -2,8 +2,14 @@ package com.itran.fgoc.server.netty;
 
 import com.itran.fgoc.server.netty.handler.HandlerFactory;
 import com.itran.fgoc.server.netty.util.T808Utils;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
+import io.netty.handler.codec.string.StringEncoder;
+
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 
 public class T808ChannelHandler extends SimpleChannelInboundHandler<byte[]> {
 

@@ -62,7 +62,7 @@ public class T808UtilsTest {
 
     @Test
     public void createMessageTest1(){
-        byte[] message = T808Utils.createMessage(MessageVar.MessageId.SERVER_COMMON_ANSWER, "41905768679", HexUtil.decodeHex("0002010200"));
+        byte[] message = T808Utils.createMessage(MessageVar.MessageId.SERVER_COMMON_RESPONSE, "41905768679", HexUtil.decodeHex("0002010200"));
 
         Assert.assertEquals("7e8001000504190576867900010002010200157e", HexUtil.encodeHexStr(message));
     }
@@ -70,7 +70,7 @@ public class T808UtilsTest {
     @Test
     public void createMessageTest2() {
         byte[] message = T808Utils.createMessage(MessageHeader.builder()
-                .messageId(MessageVar.MessageId.SERVER_COMMON_ANSWER)
+                .messageId(MessageVar.MessageId.SERVER_COMMON_RESPONSE)
                 .messageBodyLength(5)
                 .encryption(MessageVar.Encryption.DEFAULT)
                 .subcontract(false)
@@ -94,7 +94,7 @@ public class T808UtilsTest {
         for (int i = 1; i <= 100; i++) {
             executorService.execute(() -> {
                 try {
-                    Long messageSerialNumber = T808Utils.getMessageSerialNumber(MessageVar.MessageId.SERVER_COMMON_ANSWER);
+                    Long messageSerialNumber = T808Utils.getMessageSerialNumber(MessageVar.MessageId.SERVER_COMMON_RESPONSE);
                     messageSerialNumbers.add(messageSerialNumber);
                 } finally {
                     countDownLatch.countDown();
